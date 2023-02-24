@@ -2,21 +2,24 @@ import streamlit as st
 from streamlit_chat import message
 import requests
 import os
-import faiss
-from langchain import OpenAI
-from langchain.chains import VectorDBQAWithSourcesChain
-from langchain.chains.qa_with_sources import load_qa_with_sources_chain
-import pickle
-import argparse
+import openai
 
 os.environ["OPENAI_API_KEY"] = str(st.secrets["OPENAI_API_KEY"])
 
-with open("vectorstore.pkl", "rb") as f:
-    store = pickle.load(f)
-index = faiss.read_index("vectorstore.index")
-store.index = index
-chain = load_qa_with_sources_chain(OpenAI(temperature=0))
+def get_openai_response(input:str):
+    response = openai.Completion.create(
+                model="text-davinci-003",
+                prompt=input,
+                temperature=0.3,
+                max_tokens=200,
+                top_p=1.0,
+                frequency_penalty=0.0,
+                presence_penalty=0.0
+            )
+    return response["choices"][0]["text"]
 
+with open("toolsqa.txt") as f:
+    data = f.read()   
 
 st.set_page_config(
     page_title="Streamlit Chat - ToolsQA",
@@ -28,12 +31,6 @@ if 'generated' not in st.session_state:
 
 if 'past' not in st.session_state:
     st.session_state['past'] = []
-
-
-def get_response(question:str):
-  result = chain({"input_documents": store.similarity_search(question, k=4),"question": question,},return_only_outputs=True,)["output_text"]
-  result = result.replace("SOURCES: toolsqa.txt","")
-  return result
 
 st.header("Streamlit Chat - ToolsQA")
 st.markdown("[Github](https://github.com/abhijeetnazar/streamlit-chatbot-demo)")
@@ -47,7 +44,7 @@ def get_text():
 user_input = get_text()
 
 if user_input:
-    output = get_response(user_input)
+    output = get_openai_response(user_input)
     st.session_state.past.append(user_input)
     st.session_state.generated.append(output)
 

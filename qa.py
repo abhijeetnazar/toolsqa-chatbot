@@ -15,7 +15,7 @@ with open("vectorstore.pkl", "rb") as f:
 index = faiss.read_index("vectorstore.index")
 store.index = index
 
-chain = load_qa_with_sources_chain(OpenAI(temperature=0),chain_type="refine")
+chain = load_qa_with_sources_chain(OpenAI(temperature=0))
 result = chain({"input_documents": store.similarity_search(args.question, k=4),"question": args.question,},return_only_outputs=True,)["output_text"]
 
 print(result)

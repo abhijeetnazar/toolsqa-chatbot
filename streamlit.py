@@ -6,7 +6,7 @@ import openai
 
 os.environ["OPENAI_API_KEY"] = str(st.secrets["OPENAI_API_KEY"])
 
-def get_openai_response(input:str):
+def get_openai_response(data,input:str):
     data = data + f"\n{input}"
     response = openai.Completion.create(
                 model="text-davinci-003",
@@ -45,7 +45,7 @@ def get_text():
 user_input = get_text()
 
 if user_input:
-    output = get_openai_response(user_input)
+    output = get_openai_response(data,user_input)
     st.session_state.past.append(user_input)
     st.session_state.generated.append(output)
 

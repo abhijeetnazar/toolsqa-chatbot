@@ -15,7 +15,7 @@ with open("vectorstore.pkl", "rb") as f:
     store = pickle.load(f)
 index = faiss.read_index("vectorstore.index")
 store.index = index
-chain = load_qa_with_sources_chain(OpenAI(temperature=0),chain_type="refine")
+chain = load_qa_with_sources_chain(OpenAI(temperature=0))
 
 
 st.set_page_config(

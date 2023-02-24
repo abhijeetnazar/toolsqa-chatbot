@@ -7,7 +7,7 @@ import openai
 os.environ["OPENAI_API_KEY"] = str(st.secrets["OPENAI_API_KEY"])
 
 def get_openai_response(input:str):
-    data.append(f"\n{input}")
+    data = data + f"\n{input}"
     response = openai.Completion.create(
                 model="text-davinci-003",
                 prompt=data,

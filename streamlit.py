@@ -32,7 +32,7 @@ if 'past' not in st.session_state:
 
 def get_response(question:str):
   result = chain({"input_documents": store.similarity_search(question, k=4),"question": question,},return_only_outputs=True,)["output_text"]
-  # result = result.replace("SOURCES: toolsqa/course.md","")
+  result = result.replace("SOURCES: toolsqa.txt","")
   return result
 
 st.header("Streamlit Chat - ToolsQA")

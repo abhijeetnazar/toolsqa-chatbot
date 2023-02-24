@@ -34,7 +34,7 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 
 st.header("Streamlit Chat - ToolsQA")
-st.markdown("[Github](https://github.com/abhijeetnazar/streamlit-chatbot-demo)")
+st.markdown("[Github](https://github.com/abhijeetnazar/toolsqa-chatbot)")
 st.markdown ("This chatbot is used to answer questions for **ToolsQA.com** and available courses and modules.")
 
 def get_text():
